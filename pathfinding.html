@@ -17,7 +17,8 @@
 		
 		<script id="flock" type="application/flock">
 
-      let grid = 'grid'; let vertices = 'vertices'; let x = 'x'; let y = 'y'; let list = 'list'; let distances = 'distances'; let vertex_count = 'vertex_count'; let vertex_count_2 = 'vertex_count_2'; let correct = 'correct'; let x1 = 'x1'; let z1 = 'z1'; let x2 = 'x2'; let z2 = 'z2'; let adj_matrix = 'adj_matrix'; let x3 = 'x3'; let z3 = 'z3'; let x4 = 'x4'; let z4 = 'z4'; let prev = 'prev'; let end = 'end'; let jumping = 'jumping'; let player = 'player'; let dist = 'dist'; let i = 'i'; let plane1 = 'plane1'; let determinant = 'determinant'; let longest = 'longest'; let result = 'result'; let random_x = 'random_x'; let object1 = 'object1'; let k = 'k'; let j = 'j'; let n = 'n'; let random_z = 'random_z'; let queue = 'queue'; let temp = 'temp'; let num_vertices = 'num_vertices'; let lambda = 'lambda'; let path = 'path'; let temp_list = 'temp_list'; let current_node = 'current_node'; let optimalPath = 'optimalPath'; let vertex_points = 'vertex_points'; let l = 'l'; let mu = 'mu'; let player_path = 'player_path'; let nodes = 'nodes'; let camera = 'camera'; let u = 'u'; let endNode = 'endNode'; let v = 'v'; let sphere3 = 'sphere3'; let possible = 'possible'; let startNode = 'startNode';
+      // Made with Flock XR
+      let grid = 'grid'; let vertices = 'vertices'; let showValues = 'showValues'; let x = 'x'; let y = 'y'; let list = 'list'; let distances = 'distances'; let vertex_count = 'vertex_count'; let vertex_count_2 = 'vertex_count_2'; let correct = 'correct'; let x1 = 'x1'; let z1 = 'z1'; let x2 = 'x2'; let z2 = 'z2'; let adj_matrix = 'adj_matrix'; let x3 = 'x3'; let z3 = 'z3'; let x4 = 'x4'; let z4 = 'z4'; let prev = 'prev'; let end = 'end'; let jumping = 'jumping'; let player = 'player'; let dist = 'dist'; let i = 'i'; let plane1 = 'plane1'; let determinant = 'determinant'; let longest = 'longest'; let result = 'result'; let random_x = 'random_x'; let object1 = 'object1'; let j = 'j'; let n = 'n'; let random_z = 'random_z'; let k = 'k'; let queue = 'queue'; let temp = 'temp'; let num_vertices = 'num_vertices'; let lambda = 'lambda'; let path = 'path'; let temp_list = 'temp_list'; let current_node = 'current_node'; let vertex_points = 'vertex_points'; let l = 'l'; let mu = 'mu'; let player_path = 'player_path'; let optimalPath = 'optimalPath'; let nodes = 'nodes'; let camera = 'camera'; let u = 'u'; let endNode = 'endNode'; let v = 'v'; let sphere3 = 'sphere3'; let possible = 'possible'; let showingNode = 'showingNode'; let startNode = 'startNode';
 
 
 
@@ -107,7 +108,7 @@
         }
       return x;
       }
-      async function dijkstras(grid, vertices) {
+      async function dijkstras(grid, vertices, showValues) {
         dist = [];
         prev = [];
         queue = [];
@@ -130,6 +131,11 @@
             if (possible < dist[v]) {
               dist[v] = possible;
               prev[v] = u;
+              if (showValues) {
+                showingNode = nodes[v];
+                say(showingNode, { text: (String(dist[v]).slice(0, 6)), duration: 30, textColor: "#000000", backgroundColor: "#ffffff", alpha: 1, size: 20, mode: "REPLACE" });
+                await wait(1);
+              }
             }
 
             await wait(0);
@@ -212,7 +218,7 @@
         printText('Your goal is to find the shortest path ', 30, "#000080");
         printText('Starting from the orange node', 30, "#000080");
         printText('Ending at the purple node', 30, "#000080");
-        num_vertices = 12;
+        num_vertices = 8;
         vertex_points = [];
         grid = [];
         vertex_count = 0;
@@ -275,7 +281,7 @@
                 j_timing = performance.now();
               }
             }
-          result = await dijkstras(grid, vertices);
+          result = await dijkstras(grid, vertices, false);
         dist = result[0];
         prev = result[1];
         optimalPath = await longestPath(prev);
@@ -311,6 +317,7 @@
           })();
 
       async function displayOptimalPath() {
+        result = await dijkstras(grid, vertices, true);
 
             let k_timing = performance.now();
             let k_counter = 0;
@@ -332,12 +339,6 @@
         }
 
       }
-      0;
-
-      0;
-
-      0;
-
       async function GenerateVertex() {
         random_x = randomInteger(-20, 20);
         random_z = randomInteger(-20, 20);
@@ -426,8 +427,7 @@
           return 0;
         }
       return 1;
-}
-
+      }
     </script>
 
 		<script type="module">
