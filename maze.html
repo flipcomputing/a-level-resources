@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Flock standalone example</title>
+
+		 <style>
+			 body {
+				 font-family: "Asap", Helvetica, Arial, Lucida, sans-serif !important;
+			   }
+			 </style>
+	</head>
+	<body>
+		<canvas id="renderCanvas" touch-action="none"  style="width: 640px; height: 360px;" tabindex="0"></canvas>
+	</div>
+		
+		<script id="flock" type="application/flock">
+    
+      // Made with Flock XR
+      let i = 'i'; let j = 'j'; let value = 'value'; let x = 'x'; let list = 'list'; let y = 'y'; let size = 'size'; let height = 'height'; let jumping = 'jumping'; let player = 'player'; let q = 'q'; let temp = 'temp'; let total = 'total'; let boxes = 'boxes'; let box2 = 'box2'; let grid = 'grid'; let k = 'k'; let a = 'a'; let box4 = 'box4'; let p = 'p'; let b = 'b'; let box7 = 'box7'; let box8 = 'box8'; let box1 = 'box1'; let adjacent = 'adjacent'; let camera = 'camera'; let m = 'm';
+
+
+
+      async function sort(x) {
+        let repeat_end = x.length;
+        for (let count = 0; count < repeat_end; count++) {
+          x = await pass(x);
+        await wait(0);
+        }
+      return x;
+      }
+      async function pass(list) {
+
+            let i_timing = performance.now();
+            let i_counter = 0;
+            for (let i = 0; (1 > 0 ? i <= list.length - 2 : i >= list.length - 2); i += 1) {
+                a = await acccessGrid(list[i][0], list[i][1]);
+          b = await acccessGrid(list[i + 1][0], list[i + 1][1]);
+          if (a > b) {
+            temp = list[i + 1];
+            list[i + 1] = list[i];
+            list[i] = temp;
+          }
+
+              i_counter++;
+              if (i_counter % 10 === 0 && performance.now() - i_timing > 16) {
+                await new Promise(resolve => requestAnimationFrame(resolve));
+                i_timing = performance.now();
+              }
+            }
+          return list;
+      }
+      (async () => {
+        setSky("#6495ed");
+        createGround("#71bc78", "ground");
+      })();
+
+      forever(async function(){
+        if (jumping && (isTouchingSurface(player))) {
+          jumping = false;
+          broadcastEvent('landed');
+        }
+        if ((keyPressed(" ")) && !jumping) {
+          applyForce(player, { forceX: 0, forceY: 5, forceZ: 0 });
+          jumping = true;
+          broadcastEvent('jumped');
+        }
+        if (keyPressed("w")) {
+          moveForward(player, 5);
+        }
+        if (keyPressed("s")) {
+          moveForward(player, (-5));
+        }
+        if (keyPressed("a")) {
+          moveSideways(player, 5);
+        }
+        if (keyPressed("d")) {
+          moveSideways(player, (-5));
+        }
+        if (!jumping) {
+          if ((keyPressed("w")) || (keyPressed("s")) || (keyPressed("a")) || (keyPressed("d"))) {
+            await switchAnimation(player, { animationName: "Walk" });
+          } else {
+            await switchAnimation(player, { animationName: "Idle" });
+          }
+          i = i;
+        }
+      });
+
+      (async () => {
+        jumping = false;
+        printText('Hold left mouse button down to look around', 5, "#000080");
+        printText('W - forward; S backward; Space - Jump', 5, "#000080");
+        player = createCharacter({
+              modelName: 'Character1.glb',
+              modelId: 'player__8(Sk-M[i_wi%:Z#qL%WL',
+              scale: 0.75,
+              position: { x: 0, y: 0, z: 0 },
+              colors: {
+              hair: "#330000",
+              skin: "#a15c33",
+              eyes: "#000000",
+              sleeves: "#cc9933",
+              shorts: "#333399",
+              tshirt: "#cc9933"
+              }
+            });
+        await setPhysics(player, "DYNAMIC");
+        await attachCamera(player, { radius: 3, front: true });
+        camera = getCamera();
+      })();
+
+      onEvent('jumped', async function() {
+        await playAnimation(player, { animationName: "Jump" });
+        await switchAnimation(player, { animationName: "Jump_Idle" });
+      });
+
+      onEvent('landed', async function() {
+        await playAnimation(player, { animationName: "Jump_Land" });
+      });
+
+      (async () => {
+        await makeMazeWithBoundary(9, 10, 2, 5);
+      })();
+
+      async function makeMazeWithBoundary(x, y, size, height) {
+        box2 = createBox("box2__39h|*}iV[)aX2f(Dv!BR", { color: "#ff6600", width: ((x + 1) * size), height: height, depth: size, position: [(((x - 2) / 2) * size), 0, (size * -1)] });
+        box4 = createBox("box4__Zv=r?Djh3l;vhvhY6#Ir", { color: "#ffcc33", width: ((x + 1) * size), height: height, depth: size, position: [(((x - 0) / 2) * size), 0, (y * size)] });
+        box7 = createBox("box7__%N,Q|=Zk_ivu0Gw[59.=", { color: "#33cc00", width: size, height: height, depth: ((y + 1) * size), position: [(size * -1), 0, (((y - 0) / 2) * size)] });
+        box8 = createBox("box8__1ki,2!H;NJGi)?x.fbG~", { color: "#00cccc", width: size, height: height, depth: ((y + 1) * size), position: [(x * size), 0, (((y - 2) / 2) * size)] });
+        await makeMaze(x, y, size, height);
+
+      }
+      async function makeMaze(x, y, size, height) {
+        boxes = [];
+
+            let i_timing2 = performance.now();
+            let i_counter2 = 0;
+            for (let i = 0; (1 > 0 ? i <= x - 1 : i >= x - 1); i += 1) {
+                q = [];
+
+              let j_timing = performance.now();
+              let j_counter = 0;
+              for (let j = 0; (1 > 0 ? j <= y - 1 : j >= y - 1); j += 1) {
+                  box1 = createBox("box1__4Uut6Zg:kVtT?erEQ)Z=", { color: randomColour(), width: size, height: height, depth: size, position: [(i * size), 0, (j * size)] });
+            q[j] = box1;
+
+                j_counter++;
+                if (j_counter % 10 === 0 && performance.now() - j_timing > 16) {
+                  await new Promise(resolve => requestAnimationFrame(resolve));
+                  j_timing = performance.now();
+                }
+              }
+            boxes[i] = q;
+
+              i_counter2++;
+              if (i_counter2 % 10 === 0 && performance.now() - i_timing2 > 16) {
+                await new Promise(resolve => requestAnimationFrame(resolve));
+                i_timing2 = performance.now();
+              }
+            }
+          await generateMaze(x, y);
+
+      }
+      async function generateMaze(x, y) {
+        grid = [];
+
+            let i_timing3 = performance.now();
+            let i_counter3 = 0;
+            for (let i = 0; (1 > 0 ? i <= x - 1 : i >= x - 1); i += 1) {
+                q = [];
+
+              let j_timing2 = performance.now();
+              let j_counter2 = 0;
+              for (let j = 0; (1 > 0 ? j <= y - 1 : j >= y - 1); j += 1) {
+                  q[j] = randomInteger(1, 100);
+
+                j_counter2++;
+                if (j_counter2 % 10 === 0 && performance.now() - j_timing2 > 16) {
+                  await new Promise(resolve => requestAnimationFrame(resolve));
+                  j_timing2 = performance.now();
+                }
+              }
+            grid[i] = q;
+
+              i_counter3++;
+              if (i_counter3 % 10 === 0 && performance.now() - i_timing3 > 16) {
+                await new Promise(resolve => requestAnimationFrame(resolve));
+                i_timing3 = performance.now();
+              }
+            }
+          await setGridValue(0, 0, 0);
+        box2 = boxes[0][0];
+        dispose(box2);
+        adjacent = await getAdjacent(0, 0);
+        while (!!adjacent.length) {
+          adjacent = await sort(adjacent);
+          q = adjacent.splice(0, 1)[0];
+          i = q[0];
+          j = q[1];
+          if (await adjacentZeroes(i, j) == 1 && adjacent.indexOf(q) == -1) {
+            await setGridValue(i, j, 0);
+            box2 = boxes[i][j];
+            dispose(box2);
+            var m_list = await getAdjacent(i, j);
+            for (var m_index in m_list) {
+              m = m_list[m_index];
+              adjacent[adjacent.length] = m;
+
+              await wait(0);
+            }
+          }
+
+        await wait(0);
+        }
+
+      }
+      async function setGridValue(i, j, value) {
+        q = grid[i];
+        q[j] = value;
+        grid[i] = q;
+
+      }
+      async function getAdjacent(i, j) {
+        temp = [];
+        var k_list = [[0, -1], [-1, 0], [0, 1], [1, 0]];
+        for (var k_index in k_list) {
+          k = k_list[k_index];
+          p = i + k[0];
+          q = j + k[1];
+          if (p < 0 || p >= grid.length) {
+            continue;
+          }
+          if (q < 0 || q >= grid[p].length) {
+            continue;
+          }
+          if (await acccessGrid(p, q) == 0) {
+            continue;
+          }
+          temp[temp.length] = [p, q];
+
+          await wait(0);
+        }
+      return temp;
+      }
+      async function adjacentZeroes(i, j) {
+        total = 0;
+        var k_list2 = [[0, -1], [-1, 0], [0, 1], [1, 0]];
+        for (var k_index2 in k_list2) {
+          k = k_list2[k_index2];
+          p = i + k[0];
+          q = j + k[1];
+          if (p < 0 || p >= grid.length) {
+            continue;
+          }
+          if (q < 0 || q >= grid[p].length) {
+            continue;
+          }
+          if (await acccessGrid(p, q) == 0) {
+            total = (typeof total === 'number' ? total : 0) + 1;
+          }
+
+          await wait(0);
+        }
+      return total;
+      }
+      async function acccessGrid(i, j) {
+      return grid[i][j];
+      }
+    
+    </script>
+
+		<script type="module">
+			import "https://flipcomputing.github.io/flockupdate/flock.js";
+		</script>
+	</body>
+</html>
