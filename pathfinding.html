@@ -18,442 +18,457 @@
 		<script id="flock" type="application/flock">
 
       // Made with Flock XR
-      let grid = 'grid'; let vertices = 'vertices'; let showValues = 'showValues'; let x = 'x'; let y = 'y'; let list = 'list'; let distances = 'distances'; let vertex_count = 'vertex_count'; let vertex_count_2 = 'vertex_count_2'; let correct = 'correct'; let x1 = 'x1'; let z1 = 'z1'; let x2 = 'x2'; let z2 = 'z2'; let x3 = 'x3'; let z3 = 'z3'; let x4 = 'x4'; let z4 = 'z4'; let prev = 'prev'; let end = 'end'; let adj_matrix = 'adj_matrix'; let jumping = 'jumping'; let player = 'player'; let dist = 'dist'; let i = 'i'; let plane1 = 'plane1'; let determinant = 'determinant'; let longest = 'longest'; let result = 'result'; let random_x = 'random_x'; let object1 = 'object1'; let j = 'j'; let n = 'n'; let random_z = 'random_z'; let k = 'k'; let queue = 'queue'; let temp = 'temp'; let lambda = 'lambda'; let path = 'path'; let num_vertices = 'num_vertices'; let temp_list = 'temp_list'; let current_node = 'current_node'; let vertex_points = 'vertex_points'; let mu = 'mu'; let player_path = 'player_path'; let optimalPath = 'optimalPath'; let l = 'l'; let nodes = 'nodes'; let camera = 'camera'; let u = 'u'; let endNode = 'endNode'; let v = 'v'; let sphere3 = 'sphere3'; let possible = 'possible'; let showingNode = 'showingNode'; let startNode = 'startNode';
-
-
-
-      async function FilterPaths(adj_matrix) {
-
-            let i_timing = performance.now();
-            let i_counter = 0;
-            for (let i = 0; (1 > 0 ? i <= num_vertices - 1 : i >= num_vertices - 1); i += 1) {
-
-              let j_timing = performance.now();
-              let j_counter = 0;
-              for (let j = i + 1; (1 > 0 ? j <= num_vertices - 1 : j >= num_vertices - 1); j += 1) {
-
-                let k_timing = performance.now();
-                let k_counter = 0;
-                for (let k = i + 1; (1 > 0 ? k <= num_vertices - 1 : k >= num_vertices - 1); k += 1) {
-                    if (j != k) {
-
-                    let l_timing = performance.now();
-                    let l_counter = 0;
-                    for (let l = k + 1; (1 > 0 ? l <= num_vertices - 1 : l >= num_vertices - 1); l += 1) {
-                        if (j != l) {
-                    if (await CheckIntersect(vertex_points[i * 2], vertex_points[i * 2 + 1], vertex_points[j * 2], vertex_points[j * 2 + 1], vertex_points[k * 2], vertex_points[k * 2 + 1], vertex_points[l * 2], vertex_points[l * 2 + 1]) == 1) {
-                      if (adj_matrix[i][j] > adj_matrix[k][l]) {
-                        adj_matrix[i][j] = 10000;
-                        adj_matrix[j][i] = 10000;
-                      } else {
-                        adj_matrix[k][l] = 10000;
-                        adj_matrix[l][k] = 10000;
-                      }
-                    }
-                  }
-
-                      l_counter++;
-                      if (l_counter % 10 === 0 && performance.now() - l_timing > 16) {
-                        await new Promise(resolve => requestAnimationFrame(resolve));
-                        l_timing = performance.now();
-                      }
-                    }
-                  }
-
-                  k_counter++;
-                  if (k_counter % 10 === 0 && performance.now() - k_timing > 16) {
-                    await new Promise(resolve => requestAnimationFrame(resolve));
-                    k_timing = performance.now();
-                  }
-                }
-
-                j_counter++;
-                if (j_counter % 10 === 0 && performance.now() - j_timing > 16) {
-                  await new Promise(resolve => requestAnimationFrame(resolve));
-                  j_timing = performance.now();
-                }
-              }
-
-              i_counter++;
-              if (i_counter % 10 === 0 && performance.now() - i_timing > 16) {
-                await new Promise(resolve => requestAnimationFrame(resolve));
-                i_timing = performance.now();
-              }
-            }
-
-            let i_timing2 = performance.now();
-            let i_counter2 = 0;
-            for (let i = 0; (1 > 0 ? i <= num_vertices - 1 : i >= num_vertices - 1); i += 1) {
-
-              let j_timing2 = performance.now();
-              let j_counter2 = 0;
-              for (let j = i + 1; (1 > 0 ? j <= num_vertices - 1 : j >= num_vertices - 1); j += 1) {
-                  if (randomInteger(1, 100) <= 20) {
-              adj_matrix[i][j] = 10000;
-              adj_matrix[j][i] = 10000;
-            }
-
-                j_counter2++;
-                if (j_counter2 % 10 === 0 && performance.now() - j_timing2 > 16) {
-                  await new Promise(resolve => requestAnimationFrame(resolve));
-                  j_timing2 = performance.now();
-                }
-              }
-
-              i_counter2++;
-              if (i_counter2 % 10 === 0 && performance.now() - i_timing2 > 16) {
-                await new Promise(resolve => requestAnimationFrame(resolve));
-                i_timing2 = performance.now();
-              }
-            }
-          return adj_matrix;
-      }
-      forever(async function(){
-
-            let i_timing3 = performance.now();
-            let i_counter3 = 0;
-            for (let i = 0; (1 > 0 ? i <= num_vertices - 1 : i >= num_vertices - 1); i += 1) {
-                if (player_path.indexOf(i) == -1) {
-            if (await GetDistance(getProperty(player, 'POSITION_X'), getProperty(player, 'POSITION_Z'), vertex_points[i * 2], vertex_points[i * 2 + 1]) < 2) {
-              current_node = nodes[i];
-              await changeColor(current_node, { color: "#ffcc66" });
-              player_path[player_path.length - 0] = i;
-              if (current_node == endNode) {
-                await displayOptimalPath();
-              }
-            }
-          }
-
-              i_counter3++;
-              if (i_counter3 % 10 === 0 && performance.now() - i_timing3 > 16) {
-                await new Promise(resolve => requestAnimationFrame(resolve));
-                i_timing3 = performance.now();
-              }
-            }
-          });
-
-      async function pathToStart(prev, end) {
-        if (prev[end] == -1) {
-          return [end];
-        }
-        result = await pathToStart(prev, prev[end]);
-        result[result.length] = end;
-      return result;
-      }
-      async function longestPath(prev) {
-        longest = [];
-
-            let n_timing = performance.now();
-            let n_counter = 0;
-            for (let n = 0; (1 > 0 ? n <= prev.length - 1 : n >= prev.length - 1); n += 1) {
-                path = await pathToStart(prev, n);
-          if (path.length > longest.length) {
-            longest = path;
-          }
-
-              n_counter++;
-              if (n_counter % 10 === 0 && performance.now() - n_timing > 16) {
-                await new Promise(resolve => requestAnimationFrame(resolve));
-                n_timing = performance.now();
-              }
-            }
-          return longest;
-      }
-      async function GetDistance(x1, z1, x2, z2) {
-      return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(z1 - z2, 2));
-      }
-      async function path1(vertex_count, vertex_count_2, correct) {
-        plane1 = createPlane("plane1__hc9b_Ro^gS6{LS+5]54(", { color: (correct == 1 ? "#33ff33" : "#ffffcc"), width: 0.5, height: (grid[vertex_count][vertex_count_2] + 1), position: [((vertex_points[vertex_count * 2] + vertex_points[vertex_count_2 * 2]) / 2), (grid[vertex_count][vertex_count_2] / -2 - (correct == 1 ? 0.3 : 0.4)), ((vertex_points[vertex_count * 2 + 1] + vertex_points[vertex_count_2 * 2 + 1]) / 2)] });
-        await rotate(plane1, { x: 90, y: ((Math.acos(Math.abs((vertex_points[vertex_count * 2 + 1] - vertex_points[vertex_count_2 * 2 + 1]) / grid[vertex_count][vertex_count_2])) / Math.PI * 180) * (vertex_points[vertex_count * 2] - vertex_points[vertex_count_2 * 2] > 0 && vertex_points[vertex_count * 2 + 1] - vertex_points[vertex_count_2 * 2 + 1] > 0 || vertex_points[vertex_count * 2] - vertex_points[vertex_count_2 * 2] < 0 && vertex_points[vertex_count * 2 + 1] - vertex_points[vertex_count_2 * 2 + 1] < 0 ? 1 : -1)), z: 0 });
-
-      }
-      async function pass(list, distances) {
-
-            let i_timing4 = performance.now();
-            let i_counter4 = 0;
-            for (let i = 0; (1 > 0 ? i <= list.length - -1 : i >= list.length - -1); i += 1) {
-                if (distances[list[i]] > distances[list[i + 1]]) {
-            temp = list[i + 1];
-            list[i + 1] = list[i];
-            list[i] = temp;
-          }
-
-              i_counter4++;
-              if (i_counter4 % 10 === 0 && performance.now() - i_timing4 > 16) {
-                await new Promise(resolve => requestAnimationFrame(resolve));
-                i_timing4 = performance.now();
-              }
-            }
-          return list;
-      }
-      async function sort(x, y) {
-        let repeat_end = x.length;
-        for (let count = 0; count < repeat_end; count++) {
-          x = await pass(x, y);
-        await wait(0);
-        }
-      return x;
-      }
-      async function dijkstras(grid, vertices, showValues) {
-        dist = [];
-        prev = [];
-        queue = [];
-        for (var i_index in vertices) {
-          i = vertices[i_index];
-          dist[i] = 100;
-          prev[i] = -1;
-          queue[i] = i;
-
-          await wait(0);
-        }
-        dist[0] = 0;
-        while (!!queue.length) {
-          queue = await sort(queue, dist);
-          u = queue[0];
-          queue.shift();
-          for (var v_index in vertices) {
-            v = vertices[v_index];
-            possible = dist[u] + grid[u][v];
-            if (possible < dist[v]) {
-              dist[v] = possible;
-              prev[v] = u;
-              if (showValues) {
-                showingNode = nodes[v];
-                say(showingNode, { text: (String(dist[v]).slice(0, 6)), duration: 30, textColor: "#000000", backgroundColor: "#ffffff", alpha: 1, size: 20, mode: "REPLACE" });
-                await wait(1);
-              }
-            }
-
-            await wait(0);
-          }
-
-        await wait(0);
-        }
-      return [dist, prev];
-      }
-      (async () => {
-        setSky("#6495ed");
-        createGround("#71bc78", "ground");
-      })();
-
-      (async () => {
-        jumping = false;
-        printText('Hold left mouse button down to look around', 5, "#000080");
-        printText('W - forward; S backward; Space - Jump', 5, "#000080");
-        player = createCharacter({
-              modelName: 'Character1.glb',
-              modelId: 'player__8(Sk-M[i_wi%:Z#qL%WL',
-              scale: 0.75,
-              position: { x: 0, y: 0, z: 0 },
-              colors: {
-              hair: "#330000",
-              skin: "#a15c33",
-              eyes: "#000000",
-              sleeves: "#cc9933",
-              shorts: "#333399",
-              tshirt: "#cc9933"
-              }
-            });
-        await setPhysics(player, "DYNAMIC");
-        await attachCamera(player, { radius: 25, front: true });
-        camera = getCamera();
-      })();
-
-      forever(async function(){
-        if (jumping && (isTouchingSurface(player))) {
-          jumping = false;
-          broadcastEvent('landed');
-        }
-        if ((keyPressed(" ")) && !jumping) {
-          applyForce(player, { forceX: 0, forceY: 5, forceZ: 0 });
-          jumping = true;
-          broadcastEvent('jumped');
-        }
-        if (keyPressed("w")) {
-          moveForward(player, 5);
-        }
-        if (keyPressed("s")) {
-          moveForward(player, (-5));
-        }
-        if (keyPressed("a")) {
-          moveSideways(player, 5);
-        }
-        if (keyPressed("d")) {
-          moveSideways(player, (-5));
-        }
-        if (!jumping) {
-          if ((keyPressed("w")) || (keyPressed("s")) || (keyPressed("a")) || (keyPressed("d"))) {
-            await switchAnimation(player, { animationName: "Walk" });
-          } else {
-            await switchAnimation(player, { animationName: "Idle" });
-          }
-          i = i;
-        }
-      });
-
-      onEvent('jumped', async function() {
-        await playAnimation(player, { animationName: "Jump" });
-        await switchAnimation(player, { animationName: "Jump_Idle" });
-      });
-
-      onEvent('landed', async function() {
-        await playAnimation(player, { animationName: "Jump_Land" });
-      });
-
-      (async () => {
-        printText('Your goal is to find the shortest path ', 30, "#000080");
-        printText('Starting from the orange node', 30, "#000080");
-        printText('Ending at the purple node', 30, "#000080");
-        num_vertices = 8;
-        vertex_points = [];
-        grid = [];
-        vertex_count = 0;
-        nodes = [];
-
-            let i_timing5 = performance.now();
-            let i_counter5 = 0;
-            for (let i = 0; (1 > 0 ? i <= num_vertices - 1 : i >= num_vertices - 1); i += 1) {
-                nodes[i] = await GenerateVertex();
-          vertex_count = (typeof vertex_count === 'number' ? vertex_count : 0) + 1;
-
-              i_counter5++;
-              if (i_counter5 % 10 === 0 && performance.now() - i_timing5 > 16) {
-                await new Promise(resolve => requestAnimationFrame(resolve));
-                i_timing5 = performance.now();
-              }
-            }
-          player_path = [];
-        temp_list = [];
-
-            let vertex_count_timing = performance.now();
-            let vertex_count_counter = 0;
-            for (let vertex_count = 0; (1 > 0 ? vertex_count <= num_vertices - 1 : vertex_count >= num_vertices - 1); vertex_count += 1) {
-
-              let vertex_count_2_timing = performance.now();
-              let vertex_count_2_counter = 0;
-              for (let vertex_count_2 = 0; (1 > 0 ? vertex_count_2 <= num_vertices - 1 : vertex_count_2 >= num_vertices - 1); vertex_count_2 += 1) {
-                  if (vertex_count_2 == vertex_count) {
-              temp_list[vertex_count] = 10000;
-            } else {
-              temp_list[vertex_count_2] = await GetDistance(vertex_points[vertex_count * 2], vertex_points[vertex_count * 2 + 1], vertex_points[vertex_count_2 * 2], vertex_points[vertex_count_2 * 2 + 1]);
-            }
-
-                vertex_count_2_counter++;
-                if (vertex_count_2_counter % 10 === 0 && performance.now() - vertex_count_2_timing > 16) {
-                  await new Promise(resolve => requestAnimationFrame(resolve));
-                  vertex_count_2_timing = performance.now();
-                }
-              }
-            grid[vertex_count] = temp_list;
-          temp_list = [];
-
-              vertex_count_counter++;
-              if (vertex_count_counter % 10 === 0 && performance.now() - vertex_count_timing > 16) {
-                await new Promise(resolve => requestAnimationFrame(resolve));
-                vertex_count_timing = performance.now();
-              }
-            }
-          grid = await FilterPaths(grid);
-        vertices = [];
-
-            let j_timing3 = performance.now();
-            let j_counter3 = 0;
-            for (let j = 0; (1 > 0 ? j <= grid.length - 1 : j >= grid.length - 1); j += 1) {
-                vertices[j] = j;
-
-              j_counter3++;
-              if (j_counter3 % 10 === 0 && performance.now() - j_timing3 > 16) {
-                await new Promise(resolve => requestAnimationFrame(resolve));
-                j_timing3 = performance.now();
-              }
-            }
-          result = await dijkstras(grid, vertices, false);
-        dist = result[0];
-        prev = result[1];
-        optimalPath = await longestPath(prev);
-        startNode = nodes[optimalPath[0]];
-        await changeColor(startNode, { color: "#ff6600" });
-        endNode = nodes[optimalPath.slice(-1)[0]];
-        await changeColor(endNode, { color: "#6600cc" });
-
-            let i_timing6 = performance.now();
-            let i_counter6 = 0;
-            for (let i = 0; (1 > 0 ? i <= num_vertices - 1 : i >= num_vertices - 1); i += 1) {
-
-              let j_timing4 = performance.now();
-              let j_counter4 = 0;
-              for (let j = 0; (1 > 0 ? j <= num_vertices - 1 : j >= num_vertices - 1); j += 1) {
-                  if (grid[i][j] < 10000) {
-              await path1(i, j, 0);
-            }
-
-                j_counter4++;
-                if (j_counter4 % 10 === 0 && performance.now() - j_timing4 > 16) {
-                  await new Promise(resolve => requestAnimationFrame(resolve));
-                  j_timing4 = performance.now();
-                }
-              }
-
-              i_counter6++;
-              if (i_counter6 % 10 === 0 && performance.now() - i_timing6 > 16) {
-                await new Promise(resolve => requestAnimationFrame(resolve));
-                i_timing6 = performance.now();
-              }
-            }
-          })();
-
-      async function displayOptimalPath() {
-        result = await dijkstras(grid, vertices, true);
-
-            let k_timing2 = performance.now();
-            let k_counter2 = 0;
-            for (let k = 0; (1 > 0 ? k <= optimalPath.length - 2 : k >= optimalPath.length - 2); k += 1) {
-                await wait(1);
-          await path1(optimalPath[k], optimalPath[k + 1], 1);
-          await path1(optimalPath[k + 1], optimalPath[k], 1);
-
-              k_counter2++;
-              if (k_counter2 % 10 === 0 && performance.now() - k_timing2 > 16) {
-                await new Promise(resolve => requestAnimationFrame(resolve));
-                k_timing2 = performance.now();
-              }
-            }
-          if (player_path.join(',') == optimalPath.join(',')) {
-          printText('You used the optimal path,  well done!', 30, "#000080");
-        } else {
-          printText('You didn\'t find the optimal path.', 30, "#000080");
-        }
-
-      }
-      async function GenerateVertex() {
-        random_x = randomInteger(-20, 20);
-        random_z = randomInteger(-20, 20);
-        object1 = createObject({
-              modelName: 'Gem1.glb',
-              modelId: 'object1__k%NvBUV/F*B8=2n]Km}w',
-              color: "#00cccc",
-              scale: 1,
-              position: { x: random_x, y: 1, z: random_z }
-            });
-        vertex_points[vertex_count * 2] = random_x;
-        vertex_points[vertex_count * 2 + 1] = random_z;
-      return object1;
-      }
-      async function CheckIntersect(x1, z1, x2, z2, x3, z3, x4, z4) {
-        determinant = (x2 - x1) * (z3 - z4) - (x3 - x4) * (z2 - z1);
-        if (determinant == 0) {
-          return 0;
-        }
-        lambda = ((z3 - z4) * (x3 - x1) + (x4 - x3) * (z3 - z1)) / determinant;
-        if (lambda < 0 || lambda > 1) {
-          return 0;
-        }
-        mu = ((z1 - z2) * (x3 - x1) + (x2 - x1) * (z3 - z1)) / determinant;
-        if (mu < 0 || mu > 1) {
-          return 0;
-        }
-      return 1;
-      }
+     let grid = 'grid'; let vertices = 'vertices'; let showValues = 'showValues'; let x = 'x'; let y = 'y'; let list = 'list'; let distances = 'distances'; let vertex_count = 'vertex_count'; let vertex_count_2 = 'vertex_count_2'; let correct = 'correct'; let x1 = 'x1'; let z1 = 'z1'; let x2 = 'x2'; let z2 = 'z2'; let x3 = 'x3'; let z3 = 'z3'; let x4 = 'x4'; let z4 = 'z4'; let prev = 'prev'; let end = 'end'; let adj_matrix = 'adj_matrix'; let jumping = 'jumping'; let player = 'player'; let dist = 'dist'; let i = 'i'; let plane1 = 'plane1'; let determinant = 'determinant'; let longest = 'longest'; let result = 'result'; let random_x = 'random_x'; let object1 = 'object1'; let j = 'j'; let n = 'n'; let random_z = 'random_z'; let k = 'k'; let queue = 'queue'; let temp = 'temp'; let lambda = 'lambda'; let path = 'path'; let num_vertices = 'num_vertices'; let path_complete = 'path_complete'; let temp_list = 'temp_list'; let vertex_points = 'vertex_points'; let mu = 'mu'; let optimalPath = 'optimalPath'; let l = 'l'; let player_path = 'player_path'; let camera = 'camera'; let current_node = 'current_node'; let nodes = 'nodes'; let u = 'u'; let startNode = 'startNode'; let v = 'v'; let sphere3 = 'sphere3'; let possible = 'possible'; let endNode = 'endNode'; let showingNode = 'showingNode';
+     
+     
+     
+     forever(async function(){
+       if (path_complete != 1) {
+     
+         		let i_timing = performance.now();
+         		let i_counter = 0;
+         		for (let i = 0; (1 > 0 ? i <= num_vertices - 1 : i >= num_vertices - 1); i += 1) {
+         			  if (player_path.indexOf(i) == -1) {
+             if (await GetDistance(getProperty(player, 'POSITION_X'), getProperty(player, 'POSITION_Z'), vertex_points[i * 2], vertex_points[i * 2 + 1]) < 2) {
+               if (player_path.length == 0) {
+                 if (nodes[i] == startNode) {
+                   current_node = nodes[i];
+                   await changeColor(current_node, { color: "#ffcc66" });
+                   player_path[player_path.length - 0] = i;
+                 }
+               } else {
+                 if (grid[i][player_path.slice(-1)[0]] != 10000) {
+                   current_node = nodes[i];
+                   await changeColor(current_node, { color: "#ffcc66" });
+                   player_path[player_path.length - 0] = i;
+                   if (current_node == endNode) {
+                     path_complete = 1;
+                     await displayOptimalPath();
+                     break;
+                   }
+                 }
+               }
+             }
+           }
+     
+         			i_counter++;
+         			if (i_counter % 10 === 0 && performance.now() - i_timing > 16) {
+         				await new Promise(resolve => requestAnimationFrame(resolve));
+         				i_timing = performance.now();
+         			}
+         		}
+         	}
+     });
+     
+     async function FilterPaths(adj_matrix) {
+     
+       		let i_timing2 = performance.now();
+       		let i_counter2 = 0;
+       		for (let i = 0; (1 > 0 ? i <= num_vertices - 1 : i >= num_vertices - 1); i += 1) {
+     
+         		let j_timing = performance.now();
+         		let j_counter = 0;
+         		for (let j = i + 1; (1 > 0 ? j <= num_vertices - 1 : j >= num_vertices - 1); j += 1) {
+     
+           		let k_timing = performance.now();
+           		let k_counter = 0;
+           		for (let k = i + 1; (1 > 0 ? k <= num_vertices - 1 : k >= num_vertices - 1); k += 1) {
+           			  if (j != k) {
+     
+               		let l_timing = performance.now();
+               		let l_counter = 0;
+               		for (let l = k + 1; (1 > 0 ? l <= num_vertices - 1 : l >= num_vertices - 1); l += 1) {
+               			  if (j != l) {
+                   if (await CheckIntersect(vertex_points[i * 2], vertex_points[i * 2 + 1], vertex_points[j * 2], vertex_points[j * 2 + 1], vertex_points[k * 2], vertex_points[k * 2 + 1], vertex_points[l * 2], vertex_points[l * 2 + 1]) == 1) {
+                     if (adj_matrix[i][j] > adj_matrix[k][l]) {
+                       adj_matrix[i][j] = 10000;
+                       adj_matrix[j][i] = 10000;
+                     } else {
+                       adj_matrix[k][l] = 10000;
+                       adj_matrix[l][k] = 10000;
+                     }
+                   }
+                 }
+     
+               			l_counter++;
+               			if (l_counter % 10 === 0 && performance.now() - l_timing > 16) {
+               				await new Promise(resolve => requestAnimationFrame(resolve));
+               				l_timing = performance.now();
+               			}
+               		}
+               	}
+     
+           			k_counter++;
+           			if (k_counter % 10 === 0 && performance.now() - k_timing > 16) {
+           				await new Promise(resolve => requestAnimationFrame(resolve));
+           				k_timing = performance.now();
+           			}
+           		}
+     
+         			j_counter++;
+         			if (j_counter % 10 === 0 && performance.now() - j_timing > 16) {
+         				await new Promise(resolve => requestAnimationFrame(resolve));
+         				j_timing = performance.now();
+         			}
+         		}
+     
+       			i_counter2++;
+       			if (i_counter2 % 10 === 0 && performance.now() - i_timing2 > 16) {
+       				await new Promise(resolve => requestAnimationFrame(resolve));
+       				i_timing2 = performance.now();
+       			}
+       		}
+     
+       		let i_timing3 = performance.now();
+       		let i_counter3 = 0;
+       		for (let i = 0; (1 > 0 ? i <= num_vertices - 1 : i >= num_vertices - 1); i += 1) {
+     
+         		let j_timing2 = performance.now();
+         		let j_counter2 = 0;
+         		for (let j = i + 1; (1 > 0 ? j <= num_vertices - 1 : j >= num_vertices - 1); j += 1) {
+         			  if (randomInteger(1, 100) <= 20) {
+             adj_matrix[i][j] = 10000;
+             adj_matrix[j][i] = 10000;
+           }
+     
+         			j_counter2++;
+         			if (j_counter2 % 10 === 0 && performance.now() - j_timing2 > 16) {
+         				await new Promise(resolve => requestAnimationFrame(resolve));
+         				j_timing2 = performance.now();
+         			}
+         		}
+     
+       			i_counter3++;
+       			if (i_counter3 % 10 === 0 && performance.now() - i_timing3 > 16) {
+       				await new Promise(resolve => requestAnimationFrame(resolve));
+       				i_timing3 = performance.now();
+       			}
+       		}
+       	return adj_matrix;
+     }
+     async function pathToStart(prev, end) {
+       if (prev[end] == -1) {
+         return [end];
+       }
+       result = await pathToStart(prev, prev[end]);
+       result[result.length] = end;
+     return result;
+     }
+     async function longestPath(prev) {
+       longest = [];
+     
+       		let n_timing = performance.now();
+       		let n_counter = 0;
+       		for (let n = 0; (1 > 0 ? n <= prev.length - 1 : n >= prev.length - 1); n += 1) {
+       			  path = await pathToStart(prev, n);
+         if (path.length > longest.length) {
+           longest = path;
+         }
+     
+       			n_counter++;
+       			if (n_counter % 10 === 0 && performance.now() - n_timing > 16) {
+       				await new Promise(resolve => requestAnimationFrame(resolve));
+       				n_timing = performance.now();
+       			}
+       		}
+       	return longest;
+     }
+     async function GetDistance(x1, z1, x2, z2) {
+     return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(z1 - z2, 2));
+     }
+     async function path1(vertex_count, vertex_count_2, correct) {
+       plane1 = createPlane("plane1__hc9b_Ro^gS6{LS+5]54(", { color: (correct == 1 ? "#33ff33" : "#ffffcc"), width: 0.5, height: (grid[vertex_count][vertex_count_2] + 0.4), position: [((vertex_points[vertex_count * 2] + vertex_points[vertex_count_2 * 2]) / 2), (grid[vertex_count][vertex_count_2] / -2 - (correct == 1 ? 0 : 0.05)), ((vertex_points[vertex_count * 2 + 1] + vertex_points[vertex_count_2 * 2 + 1]) / 2)] });
+       await rotate(plane1, { x: 90, y: ((Math.acos(Math.abs((vertex_points[vertex_count * 2 + 1] - vertex_points[vertex_count_2 * 2 + 1]) / grid[vertex_count][vertex_count_2])) / Math.PI * 180) * (vertex_points[vertex_count * 2] - vertex_points[vertex_count_2 * 2] > 0 && vertex_points[vertex_count * 2 + 1] - vertex_points[vertex_count_2 * 2 + 1] > 0 || vertex_points[vertex_count * 2] - vertex_points[vertex_count_2 * 2] < 0 && vertex_points[vertex_count * 2 + 1] - vertex_points[vertex_count_2 * 2 + 1] < 0 ? 1 : -1)), z: 0 });
+     
+     }
+     async function pass(list, distances) {
+     
+       		let i_timing4 = performance.now();
+       		let i_counter4 = 0;
+       		for (let i = 0; (1 > 0 ? i <= list.length - -1 : i >= list.length - -1); i += 1) {
+       			  if (distances[list[i]] > distances[list[i + 1]]) {
+           temp = list[i + 1];
+           list[i + 1] = list[i];
+           list[i] = temp;
+         }
+     
+       			i_counter4++;
+       			if (i_counter4 % 10 === 0 && performance.now() - i_timing4 > 16) {
+       				await new Promise(resolve => requestAnimationFrame(resolve));
+       				i_timing4 = performance.now();
+       			}
+       		}
+       	return list;
+     }
+     async function sort(x, y) {
+       let repeat_end = x.length;
+       for (let count = 0; count < repeat_end; count++) {
+         x = await pass(x, y);
+       await wait(0);
+       }
+     return x;
+     }
+     async function dijkstras(grid, vertices, showValues) {
+       dist = [];
+       prev = [];
+       queue = [];
+       for (var i_index in vertices) {
+         i = vertices[i_index];
+         dist[i] = 100;
+         prev[i] = -1;
+         queue[i] = i;
+     
+         await wait(0);
+       }
+       dist[0] = 0;
+       while (!!queue.length) {
+         queue = await sort(queue, dist);
+         u = queue[0];
+         queue.shift();
+         for (var v_index in vertices) {
+           v = vertices[v_index];
+           possible = dist[u] + grid[u][v];
+           if (possible < dist[v]) {
+             dist[v] = possible;
+             prev[v] = u;
+             if (showValues) {
+               showingNode = nodes[v];
+               say(showingNode, { text: (String(dist[v]).slice(0, 6)), duration: 30, textColor: "#000000", backgroundColor: "#ffffff", alpha: 1, size: 20, mode: "REPLACE" });
+               await wait(1);
+             }
+           }
+     
+           await wait(0);
+         }
+     
+       await wait(0);
+       }
+     return [dist, prev];
+     }
+     (async () => {
+       setSky("#6495ed");
+       createGround("#71bc78", "ground");
+     })();
+     
+     (async () => {
+       jumping = false;
+       printText('Hold left mouse button down to look around', 5, "#000080");
+       printText('W - forward; S backward; Space - Jump', 5, "#000080");
+       player = createCharacter({
+       		  modelName: 'Character1.glb',
+       		  modelId: 'player__8(Sk-M[i_wi%:Z#qL%WL',
+       		  scale: 0.75,
+       		  position: { x: 0, y: 0, z: 0 },
+       		  colors: {
+       			hair: "#330000",
+       			skin: "#a15c33",
+       			eyes: "#000000",
+       			sleeves: "#cc9933",
+       			shorts: "#333399",
+       			tshirt: "#cc9933"
+       		  }
+       		});
+       await setPhysics(player, "DYNAMIC");
+       await attachCamera(player, { radius: 25, front: true });
+       camera = getCamera();
+     })();
+     
+     forever(async function(){
+       if (jumping && (isTouchingSurface(player))) {
+         jumping = false;
+         broadcastEvent('landed');
+       }
+       if ((keyPressed(" ")) && !jumping) {
+         applyForce(player, { forceX: 0, forceY: 5, forceZ: 0 });
+         jumping = true;
+         broadcastEvent('jumped');
+       }
+       if (keyPressed("w")) {
+         moveForward(player, 5);
+       }
+       if (keyPressed("s")) {
+         moveForward(player, (-5));
+       }
+       if (keyPressed("a")) {
+         moveSideways(player, 5);
+       }
+       if (keyPressed("d")) {
+         moveSideways(player, (-5));
+       }
+       if (!jumping) {
+         if ((keyPressed("w")) || (keyPressed("s")) || (keyPressed("a")) || (keyPressed("d"))) {
+           await switchAnimation(player, { animationName: "Walk" });
+         } else {
+           await switchAnimation(player, { animationName: "Idle" });
+         }
+         i = i;
+       }
+     });
+     
+     onEvent('jumped', async function() {
+       await playAnimation(player, { animationName: "Jump" });
+       await switchAnimation(player, { animationName: "Jump_Idle" });
+     });
+     
+     onEvent('landed', async function() {
+       await playAnimation(player, { animationName: "Jump_Land" });
+     });
+     
+     (async () => {
+       printText('Your goal is to find the shortest path ', 30, "#000080");
+       printText('Starting from the orange node', 30, "#000080");
+       printText('Ending at the purple node', 30, "#000080");
+       num_vertices = 12;
+       vertex_points = [];
+       grid = [];
+       vertex_count = 0;
+       nodes = [];
+     
+       		let i_timing5 = performance.now();
+       		let i_counter5 = 0;
+       		for (let i = 0; (1 > 0 ? i <= num_vertices - 1 : i >= num_vertices - 1); i += 1) {
+       			  nodes[i] = await GenerateVertex();
+         vertex_count = (typeof vertex_count === 'number' ? vertex_count : 0) + 1;
+     
+       			i_counter5++;
+       			if (i_counter5 % 10 === 0 && performance.now() - i_timing5 > 16) {
+       				await new Promise(resolve => requestAnimationFrame(resolve));
+       				i_timing5 = performance.now();
+       			}
+       		}
+       	path_complete = 0;
+       player_path = [];
+       temp_list = [];
+     
+       		let vertex_count_timing = performance.now();
+       		let vertex_count_counter = 0;
+       		for (let vertex_count = 0; (1 > 0 ? vertex_count <= num_vertices - 1 : vertex_count >= num_vertices - 1); vertex_count += 1) {
+     
+         		let vertex_count_2_timing = performance.now();
+         		let vertex_count_2_counter = 0;
+         		for (let vertex_count_2 = 0; (1 > 0 ? vertex_count_2 <= num_vertices - 1 : vertex_count_2 >= num_vertices - 1); vertex_count_2 += 1) {
+         			  if (vertex_count_2 == vertex_count) {
+             temp_list[vertex_count] = 10000;
+           } else {
+             temp_list[vertex_count_2] = await GetDistance(vertex_points[vertex_count * 2], vertex_points[vertex_count * 2 + 1], vertex_points[vertex_count_2 * 2], vertex_points[vertex_count_2 * 2 + 1]);
+           }
+     
+         			vertex_count_2_counter++;
+         			if (vertex_count_2_counter % 10 === 0 && performance.now() - vertex_count_2_timing > 16) {
+         				await new Promise(resolve => requestAnimationFrame(resolve));
+         				vertex_count_2_timing = performance.now();
+         			}
+         		}
+         	grid[vertex_count] = temp_list;
+         temp_list = [];
+     
+       			vertex_count_counter++;
+       			if (vertex_count_counter % 10 === 0 && performance.now() - vertex_count_timing > 16) {
+       				await new Promise(resolve => requestAnimationFrame(resolve));
+       				vertex_count_timing = performance.now();
+       			}
+       		}
+       	grid = await FilterPaths(grid);
+       vertices = [];
+     
+       		let j_timing3 = performance.now();
+       		let j_counter3 = 0;
+       		for (let j = 0; (1 > 0 ? j <= grid.length - 1 : j >= grid.length - 1); j += 1) {
+       			  vertices[j] = j;
+     
+       			j_counter3++;
+       			if (j_counter3 % 10 === 0 && performance.now() - j_timing3 > 16) {
+       				await new Promise(resolve => requestAnimationFrame(resolve));
+       				j_timing3 = performance.now();
+       			}
+       		}
+       	result = await dijkstras(grid, vertices, false);
+       dist = result[0];
+       prev = result[1];
+       optimalPath = await longestPath(prev);
+       startNode = nodes[optimalPath[0]];
+       await changeColor(startNode, { color: "#ff6600" });
+       endNode = nodes[optimalPath.slice(-1)[0]];
+       await changeColor(endNode, { color: "#6600cc" });
+     
+       		let i_timing6 = performance.now();
+       		let i_counter6 = 0;
+       		for (let i = 0; (1 > 0 ? i <= num_vertices - 1 : i >= num_vertices - 1); i += 1) {
+     
+         		let j_timing4 = performance.now();
+         		let j_counter4 = 0;
+         		for (let j = 0; (1 > 0 ? j <= num_vertices - 1 : j >= num_vertices - 1); j += 1) {
+         			  if (grid[i][j] < 10000) {
+             await path1(i, j, 0);
+           }
+     
+         			j_counter4++;
+         			if (j_counter4 % 10 === 0 && performance.now() - j_timing4 > 16) {
+         				await new Promise(resolve => requestAnimationFrame(resolve));
+         				j_timing4 = performance.now();
+         			}
+         		}
+     
+       			i_counter6++;
+       			if (i_counter6 % 10 === 0 && performance.now() - i_timing6 > 16) {
+       				await new Promise(resolve => requestAnimationFrame(resolve));
+       				i_timing6 = performance.now();
+       			}
+       		}
+       	})();
+     
+     async function displayOptimalPath() {
+       result = await dijkstras(grid, vertices, true);
+     
+       		let k_timing2 = performance.now();
+       		let k_counter2 = 0;
+       		for (let k = 0; (1 > 0 ? k <= optimalPath.length - 2 : k >= optimalPath.length - 2); k += 1) {
+       			  await wait(1);
+         await path1(optimalPath[k], optimalPath[k + 1], 1);
+         await path1(optimalPath[k + 1], optimalPath[k], 1);
+     
+       			k_counter2++;
+       			if (k_counter2 % 10 === 0 && performance.now() - k_timing2 > 16) {
+       				await new Promise(resolve => requestAnimationFrame(resolve));
+       				k_timing2 = performance.now();
+       			}
+       		}
+       	if (player_path.join(',') == optimalPath.join(',')) {
+         printText('You used the optimal path,  well done!', 30, "#000080");
+       } else {
+         printText('You didn\'t find the optimal path.', 30, "#000080");
+       }
+     
+     }
+     async function GenerateVertex() {
+       random_x = randomInteger(-20, 20);
+       random_z = randomInteger(-20, 20);
+       object1 = createObject({
+       			modelName: 'Gem1.glb',
+       			modelId: 'object1__k%NvBUV/F*B8=2n]Km}w',
+       			color: "#00cccc",
+       			scale: 1,
+       			position: { x: random_x, y: 1, z: random_z }
+       		});
+       vertex_points[vertex_count * 2] = random_x;
+       vertex_points[vertex_count * 2 + 1] = random_z;
+     return object1;
+     }
+     async function CheckIntersect(x1, z1, x2, z2, x3, z3, x4, z4) {
+       determinant = (x2 - x1) * (z3 - z4) - (x3 - x4) * (z2 - z1);
+       if (determinant == 0) {
+         return 0;
+       }
+       lambda = ((z3 - z4) * (x3 - x1) + (x4 - x3) * (z3 - z1)) / determinant;
+       if (lambda < 0 || lambda > 1) {
+         return 0;
+       }
+       mu = ((z1 - z2) * (x3 - x1) + (x2 - x1) * (z3 - z1)) / determinant;
+       if (mu < 0 || mu > 1) {
+         return 0;
+       }
+     return 1;
+     }
 
     </script>
 
