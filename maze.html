@@ -18,7 +18,7 @@
 		<script id="flock" type="application/flock">
 
       // Made with Flock XR
-     let i = 'i'; let j = 'j'; let value = 'value'; let x = 'x'; let list = 'list'; let y = 'y'; let size = 'size'; let height = 'height'; let prev = 'prev'; let target = 'target'; let jumping = 'jumping'; let player = 'player'; let camera = 'camera'; let q = 'q'; let temp = 'temp'; let total = 'total'; let boxes = 'boxes'; let box2 = 'box2'; let grid = 'grid'; let result = 'result'; let longest = 'longest'; let dfsTotal = 'dfsTotal'; let k = 'k'; let a = 'a'; let box4 = 'box4'; let object3 = 'object3'; let p = 'p'; let b = 'b'; let box7 = 'box7'; let visited = 'visited'; let toVisit = 'toVisit'; let box8 = 'box8'; let path = 'path'; let previous = 'previous'; let box1 = 'box1'; let visiting = 'visiting'; let offsets = 'offsets'; let allPaths = 'allPaths'; let adjacent = 'adjacent'; let m = 'm'; let o = 'o'; let bfsTotal = 'bfsTotal'; let object2 = 'object2'; let _ = '_'; let r = 'r'; let s = 's';
+     let i = 'i'; let j = 'j'; let value = 'value'; let x = 'x'; let list = 'list'; let y = 'y'; let size = 'size'; let height = 'height'; let prev = 'prev'; let target = 'target'; let jumping = 'jumping'; let player = 'player'; let camera = 'camera'; let q = 'q'; let temp = 'temp'; let total = 'total'; let boxes = 'boxes'; let box2 = 'box2'; let grid = 'grid'; let result = 'result'; let longest = 'longest'; let dfsTotal = 'dfsTotal'; let k = 'k'; let a = 'a'; let box4 = 'box4'; let object3 = 'object3'; let p = 'p'; let b = 'b'; let box7 = 'box7'; let visited = 'visited'; let toVisit = 'toVisit'; let sizeG = 'sizeG'; let box8 = 'box8'; let path = 'path'; let xG = 'xG'; let box1 = 'box1'; let visiting = 'visiting'; let offsets = 'offsets'; let yG = 'yG'; let adjacent = 'adjacent'; let m = 'm'; let previous = 'previous'; let bfsTotal = 'bfsTotal'; let allPaths = 'allPaths'; let o = 'o'; let object2 = 'object2'; let _ = '_'; let r = 'r'; let s = 's';
      
      
      
@@ -29,7 +29,7 @@
        			modelId: 'object3__Iob3lmbXJk.r9,h`e!zA',
        			color: "#00cccc",
        			scale: 0.75,
-       			position: { x: (i * 2 + 0.25), y: 2, z: (j * 2 + 0.25) }
+       			position: { x: (i * sizeG + 0.25), y: 2, z: (j * sizeG + 0.25) }
        		});
        await wait(0.5);
        if (i == target[0] && j == target.slice(-1)[0]) {
@@ -103,7 +103,7 @@
          			modelId: 'object3__@mTIBnt-c1{_28J68A@$',
          			color: "#ff0000",
          			scale: 0.75,
-         			position: { x: (i * 2 - 0.25), y: 2, z: (j * 2 - 0.25) }
+         			position: { x: (i * sizeG - 0.25), y: 2, z: (j * sizeG - 0.25) }
          		});
          await wait(0.5);
          if (i == target[0] && j == target.slice(-1)[0]) {
@@ -275,6 +275,35 @@
        		}
        	return list;
      }
+     async function sort2(x) {
+       let repeat_end2 = x.length;
+       for (let count2 = 0; count2 < repeat_end2; count2++) {
+         x = await pass2(x);
+       await wait(0);
+       }
+     return x;
+     }
+     async function pass2(list) {
+     
+       		let i_timing5 = performance.now();
+       		let i_counter5 = 0;
+       		for (let i = 0; (1 > 0 ? i <= list.length - 2 : i >= list.length - 2); i += 1) {
+       			  a = list[i].length;
+         b = list[i + 1].length;
+         if (a > b) {
+           temp = list[i + 1];
+           list[i + 1] = list[i];
+           list[i] = temp;
+         }
+     
+       			i_counter5++;
+       			if (i_counter5 % 10 === 0 && performance.now() - i_timing5 > 16) {
+       				await new Promise(resolve => requestAnimationFrame(resolve));
+       				i_timing5 = performance.now();
+       			}
+       		}
+       	return list;
+     }
      (async () => {
        setSky("#6495ed");
        createGround("#71bc78", "ground");
@@ -346,9 +375,13 @@
        camera = getCamera();
        await positionAt(camera, { x: 5, y: 25, z: 5, useY: true });
        await rotate(camera, { x: 90, y: 0, z: 0 });
-       await makeMazeWithBoundary(5, 5, 2, 5);
-       previous = await initialBfs(5, 5);
+       sizeG = 2;
+       xG = 9;
+       yG = 9;
+       await makeMazeWithBoundary(xG, yG, sizeG, 5);
+       previous = await initialBfs(xG, yG);
        allPaths = await longestPath(previous);
+       allPaths = await sort2(allPaths);
        o = allPaths.slice((-(randomInteger(0, 5) + 1)))[0];
        target = o.slice(-1)[0][0];
        object2 = createObject({
@@ -356,21 +389,21 @@
        			modelId: 'object2__=B?g@]~VeuQd5@+NYXwy',
        			color: "#ffd700",
        			scale: 0.75,
-       			position: { x: (target[0] * 2), y: 2, z: (target.slice(-1)[0] * 2) }
+       			position: { x: (target[0] * sizeG), y: 2, z: (target.slice(-1)[0] * sizeG) }
        		});
        bfsTotal = 0;
        dfsTotal = 0;
-       await bfs(5, 5, target);
+       await bfs(xG, yG, target);
        previous = [];
      
-       		let i_timing5 = performance.now();
-       		let i_counter5 = 0;
-       		for (let i = 0; (1 > 0 ? i <= 4 : i >= 4); i += 1) {
+       		let i_timing6 = performance.now();
+       		let i_counter6 = 0;
+       		for (let i = 0; (1 > 0 ? i <= xG - 1 : i >= xG - 1); i += 1) {
        			  q = [];
      
          		let j_timing4 = performance.now();
          		let j_counter4 = 0;
-         		for (let j = 0; (1 > 0 ? j <= 4 : j >= 4); j += 1) {
+         		for (let j = 0; (1 > 0 ? j <= yG - 1 : j >= yG - 1); j += 1) {
          			  q[j] = 0;
      
          			j_counter4++;
@@ -381,10 +414,10 @@
          		}
          	previous[i] = q;
      
-       			i_counter5++;
-       			if (i_counter5 % 10 === 0 && performance.now() - i_timing5 > 16) {
+       			i_counter6++;
+       			if (i_counter6 % 10 === 0 && performance.now() - i_timing6 > 16) {
        				await new Promise(resolve => requestAnimationFrame(resolve));
-       				i_timing5 = performance.now();
+       				i_timing6 = performance.now();
        			}
        		}
        	_ = await dfs(0, 0, target, previous);
@@ -403,8 +436,8 @@
      async function makeMaze(x, y, size, height) {
        boxes = [];
      
-       		let i_timing6 = performance.now();
-       		let i_counter6 = 0;
+       		let i_timing7 = performance.now();
+       		let i_counter7 = 0;
        		for (let i = 0; (1 > 0 ? i <= x - 1 : i >= x - 1); i += 1) {
        			  q = [];
      
@@ -422,10 +455,10 @@
          		}
          	boxes[i] = q;
      
-       			i_counter6++;
-       			if (i_counter6 % 10 === 0 && performance.now() - i_timing6 > 16) {
+       			i_counter7++;
+       			if (i_counter7 % 10 === 0 && performance.now() - i_timing7 > 16) {
        				await new Promise(resolve => requestAnimationFrame(resolve));
-       				i_timing6 = performance.now();
+       				i_timing7 = performance.now();
        			}
        		}
        	await generateMaze(x, y);
@@ -434,8 +467,8 @@
      async function generateMaze(x, y) {
        grid = [];
      
-       		let i_timing7 = performance.now();
-       		let i_counter7 = 0;
+       		let i_timing8 = performance.now();
+       		let i_counter8 = 0;
        		for (let i = 0; (1 > 0 ? i <= x - 1 : i >= x - 1); i += 1) {
        			  q = [];
      
@@ -452,10 +485,10 @@
          		}
          	grid[i] = q;
      
-       			i_counter7++;
-       			if (i_counter7 % 10 === 0 && performance.now() - i_timing7 > 16) {
+       			i_counter8++;
+       			if (i_counter8 % 10 === 0 && performance.now() - i_timing8 > 16) {
        				await new Promise(resolve => requestAnimationFrame(resolve));
-       				i_timing7 = performance.now();
+       				i_timing8 = performance.now();
        			}
        		}
        	await setGridValue(0, 0, 0);
