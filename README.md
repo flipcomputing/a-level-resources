@@ -10,3 +10,6 @@ This project is intended to be used to show students an example use of Dijkstra'
 At the start of the lesson the students could be told to try to find the shortest path from the orange node to the purple node. They could be asked to generate their own ideas on how to work out the shortest path. After this, the program will show them the solution, which it calculates using Dijkstra's algorithm, and then the students can be taught how Dijkstra's algorithm works and found the shortest path.
 
 The json file for the project can be found [here](https://github.com/flipcomputing/a-level-resources/blob/main/pathfindingGame.json)
+
+## [Maze Game](https://flipcomputing.github.io/a-level-resources/maze.html)
+
