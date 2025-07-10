@@ -18,11 +18,12 @@
 		<script id="flock" type="application/flock">
 
       // Made with Flock XR
-     let i = 'i'; let j = 'j'; let value = 'value'; let x = 'x'; let list = 'list'; let y = 'y'; let size = 'size'; let height = 'height'; let prev = 'prev'; let target = 'target'; let jumping = 'jumping'; let player = 'player'; let camera = 'camera'; let q = 'q'; let temp = 'temp'; let total = 'total'; let boxes = 'boxes'; let box2 = 'box2'; let grid = 'grid'; let result = 'result'; let longest = 'longest'; let object3 = 'object3'; let k = 'k'; let a = 'a'; let box4 = 'box4'; let p = 'p'; let b = 'b'; let box7 = 'box7'; let visited = 'visited'; let toVisit = 'toVisit'; let box8 = 'box8'; let path = 'path'; let offsets = 'offsets'; let previous = 'previous'; let box1 = 'box1'; let visiting = 'visiting'; let allPaths = 'allPaths'; let adjacent = 'adjacent'; let m = 'm'; let o = 'o'; let object2 = 'object2'; let _ = '_';
+     let i = 'i'; let j = 'j'; let value = 'value'; let x = 'x'; let list = 'list'; let y = 'y'; let size = 'size'; let height = 'height'; let prev = 'prev'; let target = 'target'; let jumping = 'jumping'; let player = 'player'; let camera = 'camera'; let q = 'q'; let temp = 'temp'; let total = 'total'; let boxes = 'boxes'; let box2 = 'box2'; let grid = 'grid'; let result = 'result'; let longest = 'longest'; let dfsTotal = 'dfsTotal'; let k = 'k'; let a = 'a'; let box4 = 'box4'; let object3 = 'object3'; let p = 'p'; let b = 'b'; let box7 = 'box7'; let visited = 'visited'; let toVisit = 'toVisit'; let box8 = 'box8'; let path = 'path'; let previous = 'previous'; let box1 = 'box1'; let visiting = 'visiting'; let offsets = 'offsets'; let allPaths = 'allPaths'; let adjacent = 'adjacent'; let m = 'm'; let o = 'o'; let bfsTotal = 'bfsTotal'; let object2 = 'object2'; let _ = '_'; let r = 'r'; let s = 's';
      
      
      
      async function dfs(i, j, target, prev) {
+       dfsTotal = (typeof dfsTotal === 'number' ? dfsTotal : 0) + 1;
        object3 = createObject({
        			modelName: 'Gem1.glb',
        			modelId: 'object3__Iob3lmbXJk.r9,h`e!zA',
@@ -96,6 +97,7 @@
          visiting = toVisit.shift();
          i = visiting.shift();
          j = visiting.shift();
+         bfsTotal = (typeof bfsTotal === 'number' ? bfsTotal : 0) + 1;
          object3 = createObject({
          			modelName: 'Gem1.glb',
          			modelId: 'object3__@mTIBnt-c1{_28J68A@$',
@@ -356,6 +358,8 @@
        			scale: 0.75,
        			position: { x: (target[0] * 2), y: 2, z: (target.slice(-1)[0] * 2) }
        		});
+       bfsTotal = 0;
+       dfsTotal = 0;
        await bfs(5, 5, target);
        previous = [];
      
@@ -384,6 +388,8 @@
        			}
        		}
        	_ = await dfs(0, 0, target, previous);
+       r = UIText((['Breadth-First Search visited ',bfsTotal,' tiles.'].join('')), 100, 50, 24, "#000080", 0, r);
+       s = UIText((['Depth-First Search visited ',dfsTotal,' tiles.'].join('')), 100, 100, 24, "#000080", 0, s);
      })();
      
      async function makeMazeWithBoundary(x, y, size, height) {
