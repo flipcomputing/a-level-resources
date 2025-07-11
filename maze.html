@@ -18,7 +18,7 @@
 		<script id="flock" type="application/flock">
 
       // Made with Flock XR
-     let i = 'i'; let j = 'j'; let value = 'value'; let x = 'x'; let list = 'list'; let y = 'y'; let size = 'size'; let height = 'height'; let prev = 'prev'; let target = 'target'; let jumping = 'jumping'; let player = 'player'; let camera = 'camera'; let q = 'q'; let temp = 'temp'; let total = 'total'; let boxes = 'boxes'; let box2 = 'box2'; let grid = 'grid'; let result = 'result'; let longest = 'longest'; let dfsTotal = 'dfsTotal'; let k = 'k'; let a = 'a'; let box4 = 'box4'; let object3 = 'object3'; let p = 'p'; let b = 'b'; let box7 = 'box7'; let visited = 'visited'; let toVisit = 'toVisit'; let sizeG = 'sizeG'; let box8 = 'box8'; let path = 'path'; let xG = 'xG'; let box1 = 'box1'; let visiting = 'visiting'; let offsets = 'offsets'; let yG = 'yG'; let adjacent = 'adjacent'; let m = 'm'; let previous = 'previous'; let bfsTotal = 'bfsTotal'; let allPaths = 'allPaths'; let o = 'o'; let object2 = 'object2'; let _ = '_'; let r = 'r'; let s = 's';
+     let i = 'i'; let j = 'j'; let value = 'value'; let x = 'x'; let list = 'list'; let y = 'y'; let size = 'size'; let height = 'height'; let prev = 'prev'; let target = 'target'; let jumping = 'jumping'; let player = 'player'; let camera = 'camera'; let q = 'q'; let temp = 'temp'; let total = 'total'; let boxes = 'boxes'; let box2 = 'box2'; let grid = 'grid'; let result = 'result'; let longest = 'longest'; let dfsTotal = 'dfsTotal'; let k = 'k'; let a = 'a'; let box4 = 'box4'; let object3 = 'object3'; let p = 'p'; let b = 'b'; let box7 = 'box7'; let visited = 'visited'; let toVisit = 'toVisit'; let box8 = 'box8'; let path = 'path'; let box1 = 'box1'; let visiting = 'visiting'; let sizeG = 'sizeG'; let offsets = 'offsets'; let adjacent = 'adjacent'; let m = 'm'; let xG = 'xG'; let bfsTotal = 'bfsTotal'; let yG = 'yG'; let previous = 'previous'; let allPaths = 'allPaths'; let o = 'o'; let object2 = 'object2'; let _ = '_'; let r = 'r'; let s = 's';
      
      
      
@@ -373,8 +373,11 @@
      
      (async () => {
        camera = getCamera();
-       await positionAt(camera, { x: 5, y: 25, z: 5, useY: true });
+       await positionAt(camera, { x: 7.5, y: 35, z: 7.5, useY: true });
        await rotate(camera, { x: 90, y: 0, z: 0 });
+       printText('First, a maze will generate', 30, "#000080");
+       printText('Second, a breadth-first search will find a target', 30, "#000080");
+       printText('Third, a depth-first search will find the target', 30, "#000080");
        sizeG = 2;
        xG = 9;
        yG = 9;
