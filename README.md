@@ -11,6 +11,8 @@ At the start of the lesson the students could be told to try to find the shortes
 
 The json file for the project can be found [here](https://github.com/flipcomputing/a-level-resources/blob/main/pathfinding.json)
 
+The project in Flock can be found [here](https://flipcomputing.github.io/flockupdate/?project=https://raw.githubusercontent.com/flipcomputing/a-level-resources/refs/heads/main/pathfinding.json)
+
 ## [Maze Visualisation](https://flipcomputing.github.io/a-level-resources/maze.html)
 
 The purpose of this project is visualise breadth-first search and depth-first search in the scenario of solving a maze. First, a maze is created using Prim's algorithm, by randomly assigning a weight to each wall, and then picking the accessible walls with the least values that don't create cycles until it can no longer turn walls into paths. Then, it spawns a target in yellow. Next, it demonstrates a breadth-first search, placing red markers in order on each tile visited during its search for the target. Finally, it shows a depth-first search, this time placing cyan markers on the tiles.
@@ -18,3 +20,5 @@ The purpose of this project is visualise breadth-first search and depth-first se
 This project is intended to be used when teaching these search algorithms to illustrate how they both work. This visualisation clearly depicts the differences in these approaches, so it should help students understand the difference between them. Additionally, at the end, the program displays the number of tiles used by each algorithm.
 
 The json file for the project can be found [here](https://github.com/flipcomputing/a-level-resources/blob/main/maze.json)
+
+The project in Flock can be found [here](https://flipcomputing.github.io/flockupdate/?project=https://raw.githubusercontent.com/flipcomputing/a-level-resources/refs/heads/main/maze.json)
